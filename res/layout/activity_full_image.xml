@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/activity_full_image_rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_blue" >
+
+        <TextView
+            android:id="@+id/activity_full_image_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/photodetail"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dimen_size_font_16" />
+    </RelativeLayout>
+
+    <com.demo.instagram.common.ZoomableImageView
+        android:id="@+id/activity_full_image_img_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activity_full_image_rel_top"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/instagram" />
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green">#00FF00</color>
+    <color name="thumbColor">#66aaaaaa</color>
+    <color name="black">#000000</color>
+    <color name="light_green">#B4CE22</color>
+    <color name="center_green">#9AB31D</color>
+    <color name="dark_green">#7A9218</color>
+    <color name="sky_blue">#00A8DA</color>
+    <color name="light_grey">#DDDDDD</color>
+    <color name="dark_grey">#D2D2D2</color>
+    <color name="purple">#812164</color>
+    <color name="color_bg_gray">#f0f0f0</color>
+    <color name="color_header_light_blue">#33b5e5</color>
+    <color name="color_header_dark_blue">#0099cc</color>
+    <color name="color_text_blue">#2F4E7B</color>
+    <color name="color_text_light_blue">#697585</color>
+    <color name="color_text_light_orange">#E56E36</color>
+    <color name="color_text_light_purple">#692773</color>
+     <!-- Action bar background -->
+    <color name="color_blue">#1E88E5</color>
+</resources>

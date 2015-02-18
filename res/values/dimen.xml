@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_size_40">40dp</dimen>
+    <dimen name="dimen_size_150">150dp</dimen>
+    
+    <!-- Text Size -->
+    <dimen name="dimen_size_font_16">16sp</dimen>
+    <dimen name="dimen_size_font_14">14sp</dimen>
+    <dimen name="dimen_size_font_12">12sp</dimen>
+    <dimen name="dimen_size_font_10">10sp</dimen>
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey" >
+
+    <RelativeLayout
+        android:id="@+id/activity_tag_images_rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_blue" >
+
+        <TextView
+            android:id="@+id/activity_tag_images_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/connectedas"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dimen_size_font_16" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/activity_tag_images_txt_disconnect"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_blue"
+        android:gravity="center"
+        android:clickable="true"
+        android:text="@string/disconnect"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dimen_size_font_16" />
+    <!-- Grid View showing image thumbnails -->
+
+    <com.demo.instagram.dragdrop.DynamicGridView
+        android:id="@+id/activity_tag_images_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activity_tag_images_rel_top"
+        android:layout_above="@id/activity_tag_images_txt_disconnect"
+        android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:numColumns="auto_fit"
+        android:padding="5dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp" />
+
+</RelativeLayout>
