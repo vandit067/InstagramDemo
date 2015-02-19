@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.demo.instagram.adapter.DynamicGridViewAdapter;
 import com.demo.instagram.common.Util;
-import com.demo.instagram.dragdrop.BaseDynamicGridAdapter;
 import com.demo.instagram.dragdrop.DynamicGridView;
 import com.demo.instagram.model.ImagesDataModel;
 import com.demo.instagram.webservice.WSGetImagesData;
