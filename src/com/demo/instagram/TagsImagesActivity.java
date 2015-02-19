@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -19,13 +21,15 @@ import android.widget.TextView;
 
 import com.demo.instagram.adapter.DynamicGridViewAdapter;
 import com.demo.instagram.common.Util;
+import com.demo.instagram.dragdrop.BaseDynamicGridAdapter;
 import com.demo.instagram.dragdrop.DynamicGridView;
 import com.demo.instagram.model.ImagesDataModel;
 import com.demo.instagram.webservice.WSGetImagesData;
 import com.demo.instagram.webservice.WebService;
 
 public class TagsImagesActivity extends Activity implements
-		OnItemClickListener, OnClickListener, OnItemLongClickListener {
+		OnItemClickListener, OnClickListener, OnItemLongClickListener,
+		OnScrollListener {
 
 	private ArrayList<ImagesDataModel> imageDataList;
 	private DynamicGridView gridView;
@@ -34,12 +38,19 @@ public class TagsImagesActivity extends Activity implements
 	// private String accessToken = "";
 	private TextView txtDisconnect;
 	private InstagramDemoApp instagramDemoApp;
+	private DynamicGridViewAdapter dynamicGridViewAdapter;
+	private boolean isLoadMore = false;
+	private String nextMaxTagId = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tag_images);
 		initComponent();
+		callImagesDataTask();
+	}
+
+	private void callImagesDataTask() {
 		if (WebService.isNetworkAvailable(this)) {
 			requestImageTask = new RequestImagesTask(this);
 			requestImageTask.execute();
@@ -55,9 +66,11 @@ public class TagsImagesActivity extends Activity implements
 		txtDisconnect = (TextView) findViewById(R.id.activity_tag_images_txt_disconnect);
 		gridView.setOnItemLongClickListener(this);
 		gridView.setOnItemClickListener(this);
+		gridView.setOnScrollListener(this);
 		txtDisconnect.setOnClickListener(this);
 		txtTitle.setText(getString(R.string.connectedas, instagramDemoApp
 				.getInstagramApp().getUserName()));
+		imageDataList = new ArrayList<ImagesDataModel>();
 		// if (getIntent() != null) {
 		// txtTitle.setText(getString(R.string.connectedas, getIntent()
 		// .getStringExtra(getString(R.string.key_intent_username))));
@@ -75,7 +88,8 @@ public class TagsImagesActivity extends Activity implements
 		public RequestImagesTask(Context c) {
 			super();
 			this.url = c.getString(R.string.tag_api_url, "selfie",
-					instagramDemoApp.getInstagramApp().getAccessToken());
+					instagramDemoApp.getInstagramApp().getAccessToken(),
+					nextMaxTagId);
 			// this.url = c.getString(R.string.tag_api_url, "selfie",
 			// accessToken);
 			this.mContext = c;
@@ -92,13 +106,17 @@ public class TagsImagesActivity extends Activity implements
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			cancel(true);
+			if (!isLoadMore) {
+				cancel(true);
+			}
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
-				imageDataList = wsGetImagesData.executeService(mContext, url);
+				isLoadMore = true;
+				imageDataList = wsGetImagesData.executeService(mContext, url,
+						imageDataList);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -111,13 +129,31 @@ public class TagsImagesActivity extends Activity implements
 				progressDialog.dismiss();
 			}
 			if (!isCancelled() && !isFinishing()) {
+				nextMaxTagId = wsGetImagesData.getNextMaxTagId();
 				if (wsGetImagesData.isSuccess() && imageDataList != null
 						&& imageDataList.size() > 0) {
-//					gridView.setAdapter(new ImagesAdapter(mContext,
-//							imageDataList));
-					gridView.setAdapter(new DynamicGridViewAdapter(mContext,
-							imageDataList,2));
+					// gridView.setAdapter(new ImagesAdapter(mContext,
+					// imageDataList));
+					if (imageDataList != null && imageDataList.size() > 0) {
+						if (dynamicGridViewAdapter != null) {
+//							dynamicGridViewAdapter.add(imageDataList);
+							dynamicGridViewAdapter.set(imageDataList);
+						} else {
+							dynamicGridViewAdapter = new DynamicGridViewAdapter(
+									mContext, imageDataList, 2);
+							gridView.setAdapter(dynamicGridViewAdapter);
+						}
+						isLoadMore = false;
+					} else {
+						if (dynamicGridViewAdapter != null) {
+							dynamicGridViewAdapter.notifyDataSetChanged();
+						}
+					}
+					// gridView.setAdapter(new DynamicGridViewAdapter(mContext,
+					// imageDataList,2));
 				}
+				
+				
 			}
 		}
 
@@ -179,6 +215,30 @@ public class TagsImagesActivity extends Activity implements
 			int position, long id) {
 		gridView.startEditMode();
 		return false;
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		int lastInScreen = firstVisibleItem + visibleItemCount;
+		if (WebService.isNetworkAvailable(TagsImagesActivity.this)) {
+			if ((lastInScreen == totalItemCount) && !(isLoadMore)) {
+				if (imageDataList != null && !nextMaxTagId.equals("")) {
+					if (requestImageTask != null
+							&& (requestImageTask.getStatus() == AsyncTask.Status.FINISHED)) {
+						// if (imageDataList.size() < totalRecords) {
+						callImagesDataTask();
+					}
+					// }
+				}
+			}
+		}
 	};
 
 }

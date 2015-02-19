@@ -18,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -690,6 +691,7 @@ public class DynamicGridView extends GridView {
 				return;
 			}
 			final View targetView = getViewForId(getId(targetPosition));
+			Log.e("Positions : ", "original Position : " + originalPosition + "Target Position : "+targetPosition);
 			reorderElements(originalPosition, targetPosition);
 
 			mDownY = mLastEventY;
@@ -733,7 +735,7 @@ public class DynamicGridView extends GridView {
 	private void animateReorder(final int oldPosition, final int newPosition) {
 		boolean isForward = newPosition > oldPosition;
 		List<Animator> resultList = new LinkedList<Animator>();
-		if (resultList != null) {
+//		if (resultList != null) {
 			if (isForward) {
 				for (int pos = Math.min(oldPosition, newPosition); pos < Math
 						.max(oldPosition, newPosition); pos++) {
@@ -760,7 +762,7 @@ public class DynamicGridView extends GridView {
 								-view.getWidth(), 0, 0, 0));
 					}
 				}
-			}
+//			}
 		}
 		AnimatorSet resultSet = new AnimatorSet();
 		resultSet.playTogether(resultList);
