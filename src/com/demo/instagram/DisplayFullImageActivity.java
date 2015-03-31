@@ -66,7 +66,8 @@ public class DisplayFullImageActivity extends Activity {
 		 */
 		@Override
 		protected void onPreExecute() {
-			progressDialog = new ProgressDialog(DisplayFullImageActivity.this);
+			progressDialog = ProgressDialog.show(DisplayFullImageActivity.this, "",
+					getString(R.string.common_loading), true, true);;
 			super.onPreExecute();
 		}
 
