@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Strings for intent keys -->
     <string name="key_intent_username">username</string>
     <string name="key_intent_accesstoken">accesstoken</string>
     <string name="key_intent_highresurl">highresurl</string>
+
 </resources>

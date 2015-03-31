@@ -18,7 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -31,7 +30,12 @@ import android.widget.ListAdapter;
 import com.demo.instagram.R;
 
 /**
- * Author: alex askerov Date: 9/6/13 Time: 12:31 PM
+ * Purpose:This class is use for handle switch items in to grid view and other
+ * relevant scenarios.
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
  */
 public class DynamicGridView extends GridView {
 	private static final int INVALID_ID = AbstractDynamicGridAdapter.INVALID_ID;
@@ -302,6 +306,10 @@ public class DynamicGridView extends GridView {
 		return bitmap;
 	}
 
+	/**
+	 * 
+	 * @param itemId
+	 */
 	private void updateNeighborViewsForId(long itemId) {
 		int position = getPositionForID(itemId);
 		AbstractDynamicGridAdapter adapter = (AbstractDynamicGridAdapter) getAdapter();
@@ -343,6 +351,10 @@ public class DynamicGridView extends GridView {
 		}
 	}
 
+	/**
+	 * @param itemId
+	 * @return view
+	 */
 	public View getViewForId(long itemId) {
 		int firstVisiblePosition = getFirstVisiblePosition();
 		AbstractDynamicGridAdapter adapter = ((AbstractDynamicGridAdapter) getAdapter());
@@ -357,6 +369,11 @@ public class DynamicGridView extends GridView {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.AbsListView#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -413,7 +430,7 @@ public class DynamicGridView extends GridView {
 					e.printStackTrace();
 				}
 				mIsMobileScrolling = false;
-				handleMobileCellScroll();
+				// handleMobileCellScroll();
 
 				return false;
 			}
@@ -453,10 +470,17 @@ public class DynamicGridView extends GridView {
 		return super.onTouchEvent(event);
 	}
 
+	/**
+	 * Handle mobile cell scroll
+	 */
 	private void handleMobileCellScroll() {
 		mIsMobileScrolling = handleMobileCellScroll(mHoverCellCurrentBounds);
 	}
 
+	/**
+	 * @param r
+	 * @return boolean
+	 */
 	public boolean handleMobileCellScroll(Rect r) {
 		int offset = computeVerticalScrollOffset();
 		int height = getHeight();
@@ -478,6 +502,11 @@ public class DynamicGridView extends GridView {
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.GridView#setAdapter(android.widget.ListAdapter)
+	 */
 	@Override
 	public void setAdapter(ListAdapter adapter) {
 		super.setAdapter(adapter);
@@ -579,6 +608,9 @@ public class DynamicGridView extends GridView {
 		hoverViewAnimator.start();
 	}
 
+	/**
+	 * @param mobileView
+	 */
 	private void reset(View mobileView) {
 		mLeftId = INVALID_ID;
 		mRightId = INVALID_ID;
@@ -626,6 +658,9 @@ public class DynamicGridView extends GridView {
 
 	}
 
+	/**
+	 * Handle cell switch on long press of view
+	 */
 	private void handleCellSwitch() {
 		final int deltaY = mLastEventY - mDownY;
 		final int deltaX = mLastEventX - mDownX;
@@ -691,7 +726,8 @@ public class DynamicGridView extends GridView {
 				return;
 			}
 			final View targetView = getViewForId(getId(targetPosition));
-			Log.e("Positions : ", "original Position : " + originalPosition + "Target Position : "+targetPosition);
+			// Log.e("Positions : ", "original Position : " + originalPosition +
+			// "Target Position : "+targetPosition);
 			reorderElements(originalPosition, targetPosition);
 
 			mDownY = mLastEventY;
@@ -699,9 +735,9 @@ public class DynamicGridView extends GridView {
 
 			mobileView.setVisibility(View.VISIBLE);
 
-			if (isPostHoneycomb()) {
-				targetView.setVisibility(View.INVISIBLE);
-			}
+			// if (isPostHoneycomb()) {
+			// targetView.setVisibility(View.INVISIBLE);
+			// }
 
 			updateNeighborViewsForId(mMobileItemId);
 
@@ -735,34 +771,34 @@ public class DynamicGridView extends GridView {
 	private void animateReorder(final int oldPosition, final int newPosition) {
 		boolean isForward = newPosition > oldPosition;
 		List<Animator> resultList = new LinkedList<Animator>();
-//		if (resultList != null) {
-			if (isForward) {
-				for (int pos = Math.min(oldPosition, newPosition); pos < Math
-						.max(oldPosition, newPosition); pos++) {
-					View view = getViewForId(getId(pos));
-					if ((pos + 1) % getColumnCount() == 0) {
-						resultList.add(createTranslationAnimations(view,
-								-view.getWidth() * (getColumnCount() - 1), 0,
-								view.getHeight(), 0));
-					} else {
-						resultList.add(createTranslationAnimations(view,
-								view.getWidth(), 0, 0, 0));
-					}
+		// if (resultList != null) {
+		if (isForward) {
+			for (int pos = Math.min(oldPosition, newPosition); pos < Math.max(
+					oldPosition, newPosition); pos++) {
+				View view = getViewForId(getId(pos));
+				if ((pos + 1) % getColumnCount() == 0) {
+					resultList.add(createTranslationAnimations(view,
+							-view.getWidth() * (getColumnCount() - 1), 0,
+							view.getHeight(), 0));
+				} else {
+					resultList.add(createTranslationAnimations(view,
+							view.getWidth(), 0, 0, 0));
 				}
-			} else {
-				for (int pos = Math.max(oldPosition, newPosition); pos > Math
-						.min(oldPosition, newPosition); pos--) {
-					View view = getViewForId(getId(pos));
-					if ((pos + getColumnCount()) % getColumnCount() == 0) {
-						resultList.add(createTranslationAnimations(view,
-								view.getWidth() * (getColumnCount() - 1), 0,
-								-view.getHeight(), 0));
-					} else {
-						resultList.add(createTranslationAnimations(view,
-								-view.getWidth(), 0, 0, 0));
-					}
+			}
+		} else {
+			for (int pos = Math.max(oldPosition, newPosition); pos > Math.min(
+					oldPosition, newPosition); pos--) {
+				View view = getViewForId(getId(pos));
+				if ((pos + getColumnCount()) % getColumnCount() == 0) {
+					resultList.add(createTranslationAnimations(view,
+							view.getWidth() * (getColumnCount() - 1), 0,
+							-view.getHeight(), 0));
+				} else {
+					resultList.add(createTranslationAnimations(view,
+							-view.getWidth(), 0, 0, 0));
 				}
-//			}
+			}
+			// }
 		}
 		AnimatorSet resultSet = new AnimatorSet();
 		resultSet.playTogether(resultList);

@@ -4,14 +4,14 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:id="@+id/activity_full_image_rel_top"
+        android:id="@+id/activity_display_fullimage_rel_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_size_40"
         android:layout_alignParentTop="true"
         android:background="@color/color_blue" >
 
         <TextView
-            android:id="@+id/activity_full_image_txt_title"
+            android:id="@+id/activity_display_fullimage_txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -21,10 +21,10 @@
     </RelativeLayout>
 
     <com.demo.instagram.common.ZoomableImageView
-        android:id="@+id/activity_full_image_img_view"
+        android:id="@+id/activity_display_fullimage_img_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/activity_full_image_rel_top"
+        android:layout_below="@id/activity_display_fullimage_rel_top"
         android:layout_centerInParent="true"
         android:contentDescription="@null"
         android:scaleType="fitXY"

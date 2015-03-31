@@ -1,10 +1,8 @@
 package com.demo.instagram.webservice;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
@@ -30,12 +28,18 @@ import android.util.Log;
 
 import com.demo.instagram.R;
 
+/**
+ * Purpose:This class is use for manage network connectivity.
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
+ */
 public class WebService {
 
 	/**
 	 * Method is used for checking network availability.
 	 * 
-	 * @author Mihir Palkhiwala
 	 * @param context
 	 * @return isNetAvailable: boolean true for Internet availability, false
 	 *         otherwise
@@ -44,7 +48,8 @@ public class WebService {
 	public static boolean isNetworkAvailable(Context context) {
 		boolean isNetAvailable = false;
 		if (context != null) {
-			final ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			final ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 			if (mConnectivityManager != null) {
 				boolean mobileNetwork = false;
@@ -53,8 +58,10 @@ public class WebService {
 				boolean mobileNetworkConnecetd = false;
 				boolean wifiNetworkConnecetd = false;
 
-				final NetworkInfo mobileInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-				final NetworkInfo wifiInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				final NetworkInfo mobileInfo = mConnectivityManager
+						.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+				final NetworkInfo wifiInfo = mConnectivityManager
+						.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 				if (mobileInfo != null) {
 					mobileNetwork = mobileInfo.isAvailable();
@@ -66,7 +73,8 @@ public class WebService {
 
 				if (wifiNetwork || mobileNetwork) {
 					if (mobileInfo != null)
-						mobileNetworkConnecetd = mobileInfo.isConnectedOrConnecting();
+						mobileNetworkConnecetd = mobileInfo
+								.isConnectedOrConnecting();
 					wifiNetworkConnecetd = wifiInfo.isConnectedOrConnecting();
 				}
 
@@ -94,7 +102,8 @@ public class WebService {
 		try {
 			HttpParams httpParameters = new BasicHttpParams();
 			int timeoutConnection = 2400000;
-			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+			HttpConnectionParams.setConnectionTimeout(httpParameters,
+					timeoutConnection);
 			int timeoutSocket = 2400000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
@@ -102,7 +111,8 @@ public class WebService {
 			HttpGet request = new HttpGet();
 			request.setURI(new URI(nURL));
 			HttpResponse response = client.execute(request);
-			in = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"), 8);
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent(), "UTF-8"), 8);
 			StringBuffer sb = new StringBuffer("");
 			String line = "";
 			String NL = System.getProperty("line.separator");
@@ -134,13 +144,15 @@ public class WebService {
 		try {
 			HttpParams httpParameters = new BasicHttpParams();
 			int timeoutConnection = 2400000;
-			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+			HttpConnectionParams.setConnectionTimeout(httpParameters,
+					timeoutConnection);
 			int timeoutSocket = 2400000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 			final HttpPost httppost = new HttpPost(url);
-			httppost.setHeader("Content-type", "application/x-www-form-urlencoded");
+			httppost.setHeader("Content-type",
+					"application/x-www-form-urlencoded");
 			final HttpClient httpclient = new DefaultHttpClient(httpParameters);
-			
+
 			final ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 			values.add(new BasicNameValuePair("post_data_string", json));
 
@@ -152,8 +164,8 @@ public class WebService {
 			}
 			final HttpResponse httpResponse = httpclient.execute(httppost);
 			response = convertInputStreamToString(httpResponse);
-			Log.v("Request",""+json);
-			Log.v("Response",""+response);
+			Log.v("Request", "" + json);
+			Log.v("Response", "" + response);
 		} catch (SocketException e) {
 			return "Connection problem with the server.";
 		} catch (UnknownHostException e) {
@@ -179,7 +191,8 @@ public class WebService {
 	public static String convertInputStreamToString(HttpResponse response) {
 		BufferedReader bufferedReader = null;
 		try {
-			bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			bufferedReader = new BufferedReader(new InputStreamReader(response
+					.getEntity().getContent()));
 			final StringBuffer stringBuffer = new StringBuffer("");
 			String line = "";
 			final String LineSeparator = System.getProperty("line.separator");

@@ -20,11 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Display 37Signals authentication dialog.
+ * Purpose:This class is display 37Signals authentication dialog.
  * 
- * @author Thiago Locatelli <thiago.locatelli@gmail.com>
- * @author Lorensius W. L T <lorenz@londatiga.net>
- * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
  */
 public class InstagramDialog extends Dialog {
 
@@ -78,6 +78,9 @@ public class InstagramDialog extends Dialog {
 		cookieManager.removeAllCookie();
 	}
 
+	/**
+	 * Set up title.
+	 */
 	private void setUpTitle() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mTitle = new TextView(getContext());
@@ -89,6 +92,9 @@ public class InstagramDialog extends Dialog {
 		mContent.addView(mTitle);
 	}
 
+	/**
+	 * Setup webview
+	 */
 	private void setUpWebView() {
 		mWebView = new WebView(getContext());
 		mWebView.setVerticalScrollBarEnabled(false);
@@ -100,6 +106,10 @@ public class InstagramDialog extends Dialog {
 		mContent.addView(mWebView);
 	}
 
+	/**
+	 * Class is use for display webview and handle events in webview
+	 *
+	 */
 	private class OAuthWebViewClient extends WebViewClient {
 
 		@Override
@@ -148,6 +158,7 @@ public class InstagramDialog extends Dialog {
 
 	public interface OAuthDialogListener {
 		public abstract void onComplete(String accessToken);
+
 		public abstract void onError(String error);
 	}
 

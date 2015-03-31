@@ -9,7 +9,7 @@ import com.demo.instagram.R;
 
 /**
  * 
- * Purpose: This class is use for common functon
+ * Purpose: This class is use for common function declaration and implementation
  * 
  * @author Vandit Patel
  * @version 1.0
@@ -17,11 +17,6 @@ import com.demo.instagram.R;
  */
 public class Util {
 
-	
-	public static int getResID(Context c, String name) {
-		return c.getResources().getIdentifier(name, "drawable", c.getPackageName());
-	}
-	
 	/**
 	 * Static method to show Same Design Dialog By passing context and specific
 	 * message
@@ -41,7 +36,6 @@ public class Util {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
 				if (hasFinished) {
-					// ((Activity) context).onBackPressed();
 					((Activity) context).finish();
 				}
 			}

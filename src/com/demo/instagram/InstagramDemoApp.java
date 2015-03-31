@@ -23,41 +23,65 @@ public class InstagramDemoApp extends Application {
 	public DisplayImageOptions imageOptions;
 	private InstagramApp instagramApp;
 
-	/**
-	 * Called when application start 
-	 ***/
+	/* (non-Javadoc)
+	 * @see android.app.Application#onCreate()
+	 * called when application start
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		// Configure Universal Image Loader
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).threadPoolSize(5).threadPriority(Thread.MIN_PRIORITY + 2).memoryCacheSize(2500000).memoryCache(new FIFOLimitedMemoryCache(2400000)).denyCacheImageMultipleSizesInMemory()
-				.denyCacheImageMultipleSizesInMemory().discCacheFileNameGenerator(new HashCodeFileNameGenerator()).build();
-		// Initialize ImageLoader 
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				getApplicationContext()).threadPoolSize(5)
+				.threadPriority(Thread.MIN_PRIORITY + 2)
+				.memoryCacheSize(2500000)
+				.memoryCache(new FIFOLimitedMemoryCache(2400000))
+				.denyCacheImageMultipleSizesInMemory()
+				.denyCacheImageMultipleSizesInMemory()
+				.discCacheFileNameGenerator(new HashCodeFileNameGenerator())
+				.build();
+		// Initialize ImageLoader
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(config);
 	}
-	
+
+	/**
+	 * Return the instance of application class
+	 * 
+	 * @return instagramApp
+	 */
 	public InstagramApp getInstagramApp() {
 		return instagramApp;
 	}
 
+	/**
+	 * Pass instagram app instance
+	 * 
+	 * @param instagramApp
+	 */
 	public void setInstagramApp(InstagramApp instagramApp) {
 		this.instagramApp = instagramApp;
 	}
 
 	/**
-	 *  Retrieve instance of imageOptions for thumb images
+	 * Retrieve instance of imageOptions for thumb images
 	 **/
 	public DisplayImageOptions getImageOptions() {
 		if (imageOptions == null)
-			imageOptions = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.instagram).showImageForEmptyUri(R.drawable.instagram).showImageOnFail(R.drawable.instagram).cacheInMemory(true).cacheOnDisc(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).build();
+			imageOptions = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.instagram)
+					.showImageForEmptyUri(R.drawable.instagram)
+					.showImageOnFail(R.drawable.instagram).cacheInMemory(true)
+					.cacheOnDisc(true).considerExifParams(true)
+					.imageScaleType(ImageScaleType.EXACTLY).build();
 
 		return imageOptions;
 	}
 
-	/**
-	 *  Call when application is close
-	 **/
+	/* (non-Javadoc)
+	 * @see android.app.Application#onTerminate()
+	 * Call when application is close
+	 */
 	@Override
 	public void onTerminate() {
 		super.onTerminate();

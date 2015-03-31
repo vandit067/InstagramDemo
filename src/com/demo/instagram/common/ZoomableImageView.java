@@ -13,6 +13,7 @@ import android.view.ScaleGestureDetector;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+
 /**
  * Purpose: This class handle the Zoomable imageView.
  * 
@@ -22,14 +23,15 @@ import android.widget.ImageView;
  */
 public class ZoomableImageView extends ImageView {
 
-//	private static final String TAG = ZoomableImageView.class.getSimpleName();
+	// private static final String TAG =
+	// ZoomableImageView.class.getSimpleName();
 
 	// Statics
 	static final float sPanRate = 7;
 	static final float sScaleRate = 1.25F;
 	static final int sPaintDelay = 250;
 	static final int sAnimationDelay = 500;
-//	private Context mContext;
+	// private Context mContext;
 	// This is the base transformation which is used to show the image
 	// initially. The current computation for this shows the image in
 	// it's entirety, letterboxing as needed. One could chose to
@@ -90,7 +92,7 @@ public class ZoomableImageView extends ImageView {
 	// Programatic entry point
 	public ZoomableImageView(Context context) {
 		super(context);
-//		Log.v(TAG, "constructor calling");
+		// Log.v(TAG, "constructor calling");
 		init(context);
 	}
 
@@ -107,7 +109,7 @@ public class ZoomableImageView extends ImageView {
 
 	// Setup the view
 	private void init(Context context) {
-//		mContext = context;
+		// mContext = context;
 		mPaint = new Paint();
 		mPaint.setDither(true);
 		mPaint.setFilterBitmap(true);
@@ -126,8 +128,10 @@ public class ZoomableImageView extends ImageView {
 		mGestureDetector = new GestureDetector(context, new MyGestureListener());
 
 		// Force hardware acceleration
-		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			setLayerType(View.LAYER_TYPE_HARDWARE, null);*/
+		/*
+		 * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		 * setLayerType(View.LAYER_TYPE_HARDWARE, null);
+		 */
 	}
 
 	// Get the bitmap for the view
@@ -380,7 +384,7 @@ public class ZoomableImageView extends ImageView {
 
 	// Unchanged from ImageViewTouchBase
 	public void zoomTo(float scale) {
-//		Log.v(TAG, "zoomTo calling");
+		// Log.v(TAG, "zoomTo calling");
 		float width = getWidth();
 		float height = getHeight();
 
@@ -399,7 +403,7 @@ public class ZoomableImageView extends ImageView {
 
 	// Unchanged from ImageViewTouchBase
 	protected void zoomIn(float rate) {
-//		Log.v(TAG, "zoomIn calling");
+		// Log.v(TAG, "zoomIn calling");
 		if (getScale() >= mMaxZoom) {
 			return; // Don't let the user zoom into the molecular level.
 		}
@@ -417,7 +421,7 @@ public class ZoomableImageView extends ImageView {
 
 	// Unchanged from ImageViewTouchBase
 	protected void zoomOut(float rate) {
-//		Log.v(TAG, "zoomOut calling");
+		// Log.v(TAG, "zoomOut calling");
 		if (mBitmap == null) {
 			return;
 		}
@@ -431,7 +435,7 @@ public class ZoomableImageView extends ImageView {
 			mSuppMatrix.setScale(1F, 1F, width / 2F, height / 2F);
 		} else {
 			mSuppMatrix
-			.postScale(1F / rate, 1F / rate, width / 2F, height / 2F);
+					.postScale(1F / rate, 1F / rate, width / 2F, height / 2F);
 		}
 		setImageMatrix(getImageViewMatrix());
 		center(true, true, false);
@@ -486,31 +490,32 @@ public class ZoomableImageView extends ImageView {
 
 			// If the current version is above Gingerbread and the layer type is
 			// hardware accelerated, the paint is no longer needed
-			/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-					&& getLayerType() == View.LAYER_TYPE_HARDWARE) {
-				canvas.drawBitmap(mBitmap, mMatrix, null);
-			} else {*/
-				// Check if the time between draws has been met and draw the
-				// bitmap
-				if ((System.currentTimeMillis() - mLastDraw) > sPaintDelay) {
-					canvas.drawBitmap(mBitmap, mMatrix, mPaint);
-					mLastDraw = System.currentTimeMillis();
-				}
+			/*
+			 * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
+			 * getLayerType() == View.LAYER_TYPE_HARDWARE) {
+			 * canvas.drawBitmap(mBitmap, mMatrix, null); } else {
+			 */
+			// Check if the time between draws has been met and draw the
+			// bitmap
+			if ((System.currentTimeMillis() - mLastDraw) > sPaintDelay) {
+				canvas.drawBitmap(mBitmap, mMatrix, mPaint);
+				mLastDraw = System.currentTimeMillis();
+			}
 
-				// Otherwise draw the bitmap without the paint and resubmit a
-				// new request
-				else {
-					canvas.drawBitmap(mBitmap, mMatrix, null);
-					removeCallbacks(mRefresh);
-					postDelayed(mRefresh, sPaintDelay);
-				}
-			/*}*/
+			// Otherwise draw the bitmap without the paint and resubmit a
+			// new request
+			else {
+				canvas.drawBitmap(mBitmap, mMatrix, null);
+				removeCallbacks(mRefresh);
+				postDelayed(mRefresh, sPaintDelay);
+			}
+			/* } */
 		}
 	}
 
 	// Adjusts the zoom of the view
 	class ScaleListener extends
-	ScaleGestureDetector.SimpleOnScaleGestureListener {
+			ScaleGestureDetector.SimpleOnScaleGestureListener {
 
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
@@ -541,7 +546,7 @@ public class ZoomableImageView extends ImageView {
 
 	// Handles taps and scrolls of the view
 	private class MyGestureListener extends
-	GestureDetector.SimpleOnGestureListener {
+			GestureDetector.SimpleOnGestureListener {
 
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -592,7 +597,7 @@ public class ZoomableImageView extends ImageView {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 				float velocityY) {
-//			Log.e("on fling:", "" + mScaleDetector.isInProgress());
+			// Log.e("on fling:", "" + mScaleDetector.isInProgress());
 
 			// if (mScaleDetector.isInProgress())
 			// return false;
@@ -620,8 +625,10 @@ public class ZoomableImageView extends ImageView {
 					mSuppMatrix.setScale(1F, 1F, width / 2F, height / 2F);
 					setImageMatrix(getImageViewMatrix());
 					center(true, true, false);
-					/*((ProductDetailsActivity) mContext).onFlingCall(e1, e2,
-							velocityX, velocityY);*/
+					/*
+					 * ((ProductDetailsActivity) mContext).onFlingCall(e1, e2,
+					 * velocityX, velocityY);
+					 */
 
 				} else {
 					scrollBy(diffX / 2, diffY / 2, 300);
@@ -650,10 +657,10 @@ public class ZoomableImageView extends ImageView {
 		// Default case
 		return true;
 	}
-	
+
 	public void setDefaultZoom(float width, float height) {
-        mSuppMatrix.setScale(1F, 1F, width / 2F, height / 2F);
-        setImageMatrix(getImageViewMatrix());
-        center(true, true, false);
+		mSuppMatrix.setScale(1F, 1F, width / 2F, height / 2F);
+		setImageMatrix(getImageViewMatrix());
+		center(true, true, false);
 	}
 }

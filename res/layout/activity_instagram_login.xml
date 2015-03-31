@@ -7,15 +7,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dimen_size_40"
         android:gravity="center"
-        android:layout_alignParentTop="true"
         android:text="@string/loginwithinstagram"
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/btnConnect"
+        android:id="@+id/activity_instagram_login_btn_connect"
         android:layout_width="@dimen/dimen_size_150"
         android:layout_height="@dimen/dimen_size_40"
         android:layout_centerInParent="true"

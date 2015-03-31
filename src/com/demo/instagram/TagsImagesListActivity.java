@@ -26,29 +26,89 @@ import com.demo.instagram.model.ImagesDataModel;
 import com.demo.instagram.webservice.WSGetImagesData;
 import com.demo.instagram.webservice.WebService;
 
-public class TagsImagesActivity extends Activity implements
+/**
+ * Purpose:This class is use for display images in to grid from instagram which
+ * has #Selfie tag.
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
+ */
+public class TagsImagesListActivity extends Activity implements
 		OnItemClickListener, OnClickListener, OnItemLongClickListener,
 		OnScrollListener {
 
+	/**
+	 * Arraylist of images
+	 */
 	private ArrayList<ImagesDataModel> imageDataList;
+	/**
+	 * Gridview android component to show images
+	 */
 	private DynamicGridView gridView;
+	/**
+	 * AsyncTask for query instagram api to retrieve #selfie images
+	 */
 	private RequestImagesTask requestImageTask;
-	private TextView txtTitle;
-	// private String accessToken = "";
+	/**
+	 * Show from which instagram user loggedin
+	 */
+	private TextView txtConnectedAs;
+	/**
+	 * To disconnect from instagram
+	 */
 	private TextView txtDisconnect;
+	/**
+	 * InstagramDemoApp Declaration
+	 */
 	private InstagramDemoApp instagramDemoApp;
+	/**
+	 * Adapter to display images in to gridview
+	 */
 	private DynamicGridViewAdapter dynamicGridViewAdapter;
+	/**
+	 * Flag to indicate load more feature
+	 */
 	private boolean isLoadMore = false;
+	/**
+	 * Find nextMaxTagId to retrieve next page images from instagram
+	 */
 	private String nextMaxTagId = "";
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle) Called first when
+	 * activity call.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tag_images);
+		setContentView(R.layout.activity_tag_images_list);
 		initComponent();
 		callImagesDataTask();
 	}
 
+	/**
+	 * Initialize android UI Components and assign listners.
+	 */
+	private void initComponent() {
+		instagramDemoApp = (InstagramDemoApp) getApplicationContext();
+		gridView = (DynamicGridView) findViewById(R.id.activity_tag_images_list_gridview);
+		txtConnectedAs = (TextView) findViewById(R.id.activity_tag_images_list_txt_title);
+		txtDisconnect = (TextView) findViewById(R.id.activity_tag_images_list_txt_disconnect);
+		gridView.setOnItemLongClickListener(this);
+		gridView.setOnItemClickListener(this);
+		gridView.setOnScrollListener(this);
+		txtDisconnect.setOnClickListener(this);
+		txtConnectedAs.setText(getString(R.string.connectedas, instagramDemoApp
+				.getInstagramApp().getUserName()));
+		imageDataList = new ArrayList<ImagesDataModel>();
+	}
+
+	/**
+	 * Check network connection and call RequestImagesTask for load images
+	 */
 	private void callImagesDataTask() {
 		if (WebService.isNetworkAvailable(this)) {
 			requestImageTask = new RequestImagesTask(this);
@@ -58,32 +118,30 @@ public class TagsImagesActivity extends Activity implements
 		}
 	}
 
-	private void initComponent() {
-		instagramDemoApp = (InstagramDemoApp) getApplicationContext();
-		gridView = (DynamicGridView) findViewById(R.id.activity_tag_images_gridview);
-		txtTitle = (TextView) findViewById(R.id.activity_tag_images_txt_title);
-		txtDisconnect = (TextView) findViewById(R.id.activity_tag_images_txt_disconnect);
-		gridView.setOnItemLongClickListener(this);
-		gridView.setOnItemClickListener(this);
-		gridView.setOnScrollListener(this);
-		txtDisconnect.setOnClickListener(this);
-		txtTitle.setText(getString(R.string.connectedas, instagramDemoApp
-				.getInstagramApp().getUserName()));
-		imageDataList = new ArrayList<ImagesDataModel>();
-		// if (getIntent() != null) {
-		// txtTitle.setText(getString(R.string.connectedas, getIntent()
-		// .getStringExtra(getString(R.string.key_intent_username))));
-		// accessToken = getIntent().getStringExtra(
-		// getString(R.string.key_intent_accesstoken));
-		// }
-	}
-
 	private class RequestImagesTask extends AsyncTask<Void, Void, Void> {
+
+		/**
+		 * Url to specify for retrieve images from Instagram
+		 */
 		private String url;
+		/**
+		 * Context of current instance
+		 */
 		private Context mContext;
+		/**
+		 * Instance for webservice call and handling
+		 */
 		private WSGetImagesData wsGetImagesData;
+		/**
+		 * Declaration of progressdialog
+		 */
 		private ProgressDialog progressDialog;
 
+		/**
+		 * Constructor of RequestImagesTask
+		 * 
+		 * @param c
+		 */
 		public RequestImagesTask(Context c) {
 			super();
 			this.url = c.getString(R.string.tag_api_url, "selfie",
@@ -92,16 +150,28 @@ public class TagsImagesActivity extends Activity implements
 			// this.url = c.getString(R.string.tag_api_url, "selfie",
 			// accessToken);
 			this.mContext = c;
+			// Instance for handling webservice call
 			wsGetImagesData = new WSGetImagesData(mContext);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// Display ProgressDialog
 			progressDialog = ProgressDialog.show(mContext, "",
 					getString(R.string.common_loading), true, true);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onCancelled()
+		 */
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
@@ -110,6 +180,11 @@ public class TagsImagesActivity extends Activity implements
 			}
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
+		 */
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
@@ -122,6 +197,11 @@ public class TagsImagesActivity extends Activity implements
 			return null;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(Void unused) {
 			if (progressDialog != null && progressDialog.isShowing()) {
@@ -135,7 +215,7 @@ public class TagsImagesActivity extends Activity implements
 					// imageDataList));
 					if (imageDataList != null && imageDataList.size() > 0) {
 						if (dynamicGridViewAdapter != null) {
-//							dynamicGridViewAdapter.add(imageDataList);
+							// dynamicGridViewAdapter.add(imageDataList);
 							dynamicGridViewAdapter.set(imageDataList);
 						} else {
 							dynamicGridViewAdapter = new DynamicGridViewAdapter(
@@ -151,31 +231,43 @@ public class TagsImagesActivity extends Activity implements
 					// gridView.setAdapter(new DynamicGridViewAdapter(mContext,
 					// imageDataList,2));
 				}
-				
-				
+
 			}
 		}
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long) Handle click event of views
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View v, int position,
 			long id) {
 		ImagesDataModel imagesDataModel = (ImagesDataModel) adapterView
 				.getItemAtPosition(position);
-		Intent i = new Intent(TagsImagesActivity.this, ImageActivity.class);
+		Intent i = new Intent(TagsImagesListActivity.this,
+				DisplayFullImageActivity.class);
 		i.putExtra(getString(R.string.key_intent_highresurl),
 				imagesDataModel.getHighResImageUrl());
 		startActivity(i);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.activity_tag_images_txt_disconnect:
+		case R.id.activity_tag_images_list_txt_disconnect:
 			if (instagramDemoApp.getInstagramApp().hasAccessToken()) {
 				final AlertDialog.Builder builder = new AlertDialog.Builder(
-						TagsImagesActivity.this);
+						TagsImagesListActivity.this);
 				builder.setMessage("Disconnect from Instagram?")
 						.setCancelable(false)
 						.setPositiveButton("Yes",
@@ -185,7 +277,7 @@ public class TagsImagesActivity extends Activity implements
 										instagramDemoApp.getInstagramApp()
 												.resetAccessToken();
 										Intent i = new Intent(
-												TagsImagesActivity.this,
+												TagsImagesListActivity.this,
 												InstagramLoginActivity.class);
 										startActivity(i);
 										finish();
@@ -209,6 +301,14 @@ public class TagsImagesActivity extends Activity implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemLongClickListener#onItemLongClick(android
+	 * .widget.AdapterView, android.view.View, int, long) Handle Long click of
+	 * view
+	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
@@ -216,17 +316,31 @@ public class TagsImagesActivity extends Activity implements
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android
+	 * .widget.AbsListView, int)
+	 */
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.AbsListView.OnScrollListener#onScroll(android.widget.
+	 * AbsListView, int, int, int) Check scroll position and handle load more
+	 * feature.
+	 */
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		int lastInScreen = firstVisibleItem + visibleItemCount;
-		if (WebService.isNetworkAvailable(TagsImagesActivity.this)) {
+		if (WebService.isNetworkAvailable(TagsImagesListActivity.this)) {
 			if ((lastInScreen == totalItemCount) && !(isLoadMore)) {
 				if (imageDataList != null && !nextMaxTagId.equals("")) {
 					if (requestImageTask != null

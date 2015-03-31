@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="green">#00FF00</color>
     <color name="thumbColor">#66aaaaaa</color>
     <color name="black">#000000</color>
@@ -17,6 +18,7 @@
     <color name="color_text_light_blue">#697585</color>
     <color name="color_text_light_orange">#E56E36</color>
     <color name="color_text_light_purple">#692773</color>
-     <!-- Action bar background -->
+    <!-- Action bar background -->
     <color name="color_blue">#1E88E5</color>
+
 </resources>

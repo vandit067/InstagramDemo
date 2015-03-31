@@ -13,15 +13,35 @@ import com.demo.instagram.R;
 import com.demo.instagram.dragdrop.BaseDynamicGridAdapter;
 import com.demo.instagram.model.ImagesDataModel;
 
+/**
+ * Purpose:This class is use for display images with relevant views
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
+ */
 public class DynamicGridViewAdapter extends BaseDynamicGridAdapter {
 	private InstagramDemoApp instagramApp;
 
+	/**
+	 * Constructor to assign values
+	 * 
+	 * @param context
+	 * @param moduleDataList
+	 * @param columnCount
+	 */
 	public DynamicGridViewAdapter(Context context,
 			List<ImagesDataModel> moduleDataList, int columnCount) {
 		super(context, moduleDataList, columnCount);
 		instagramApp = (InstagramDemoApp) context.getApplicationContext();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CheeseViewHolder holder;
@@ -37,6 +57,10 @@ public class DynamicGridViewAdapter extends BaseDynamicGridAdapter {
 		return convertView;
 	}
 
+	/**
+	 * Class is use for bind the image with views.
+	 *
+	 */
 	private class CheeseViewHolder {
 		private ImageView imgView;
 

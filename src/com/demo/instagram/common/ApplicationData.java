@@ -1,5 +1,11 @@
 package com.demo.instagram.common;
-
+/**
+ * Purpose:This class is use for specify static field for instagram basic detail access.
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
+ */
 public class ApplicationData {
 	public static final String CLIENT_ID = "aecf92c8c15543fdbc4664f822917ba1";
 	public static final String CLIENT_SECRET = "fbfb483cae6f40d99c2e39194a75c901";

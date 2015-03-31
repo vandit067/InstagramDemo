@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Instagram Demo - Vandit</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
@@ -9,7 +10,8 @@
     <string name="http_parsing_error">Connection problem with the server.</string>
     <string name="Invalid_data">Invalid data from the server.</string>
     <string name="common_loading">Loading...</string>
-     <string name="common_internet">Your internet connection appears to be off</string>
+    <string name="common_internet">Your internet connection appears to be off</string>
     <string name="common_error">Some error occurred, Please try later.</string>
     <string name="tag_api_url">https://api.instagram.com/v1/tags/%1$s/media/recent?access_token=%2$s&amp;max_tag_id=%3$s</string>
+
 </resources>

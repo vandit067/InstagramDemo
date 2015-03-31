@@ -10,12 +10,30 @@ import android.util.Log;
 
 import com.demo.instagram.R;
 import com.demo.instagram.model.ImagesDataModel;
-
+/**
+ * Purpose:This class is handle input request and parse the data in JSON format.
+ * 
+ * @author Vandit Patel
+ * @version 1.0
+ * @date 18/02/15
+ */
 public class WSGetImagesData {
 
+	/**
+	 * Specify context
+	 */
 	private Context context;
+	/**
+	 * Store message
+	 */
 	private String message = "";
+	/**
+	 * Check get the response or not
+	 */
 	private boolean isSuccess = false;
+	/**
+	 * Store next max tag id to fetch next page.
+	 */
 	private String nextMaxTagId = "";
 
 	public WSGetImagesData(Context context) {
@@ -31,7 +49,7 @@ public class WSGetImagesData {
 	}
 
 	/**
-	 * Public method to call from AsyncTask
+	 * Public method to call from AsyncTask to execute instagram request.
 	 * 
 	 * @param context
 	 * @param url
@@ -43,22 +61,22 @@ public class WSGetImagesData {
 		return parseResponse(WebService.getData(context, url), imagesList);
 	}
 
+	/**
+	 * Parse the response and store data in to model
+	 * @param json
+	 * @param imagesDataList
+	 * @return ArrayList<ImagesDataModel>
+	 */
 	private ArrayList<ImagesDataModel> parseResponse(final String json,
 			ArrayList<ImagesDataModel> imagesDataList) {
-		// ArrayList<ImagesDataModel> imagesDataList = null;
 		if (json != null && !json.trim().equals("")) {
 			try {
 				isSuccess = true;
 				final JSONObject jsonObject = new JSONObject(json);
 				nextMaxTagId = jsonObject.optJSONObject("pagination")
 						.getString("next_max_tag_id");
-				Log.e("Next Max Tag Id : ", nextMaxTagId);
-				// imageData.getJSONArray("data").getJSONObject(position)
-				// .getJSONObject("images").getJSONObject("thumbnail")
-				// .getString("url");
 				JSONArray instagramDataList = jsonObject.optJSONArray("data");
 				if (instagramDataList != null && instagramDataList.length() > 0) {
-					// imagesDataList = new ArrayList<ImagesDataModel>();
 					ImagesDataModel model;
 					for (int i = 0; i < instagramDataList.length(); i++) {
 						JSONObject imageResDataObject = instagramDataList
@@ -90,10 +108,16 @@ public class WSGetImagesData {
 		return imagesDataList;
 	}
 
+	/**
+	 * @return nextMaxTagId
+	 */
 	public String getNextMaxTagId() {
 		return nextMaxTagId;
 	}
 
+	/**
+	 * @param nextMaxTagId
+	 */
 	public void setNextMaxTagId(String nextMaxTagId) {
 		this.nextMaxTagId = nextMaxTagId;
 	}

@@ -16,9 +16,7 @@
             android:layout_centerInParent="true"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"/>
-
-       
+            android:scaleType="centerCrop" />
     </RelativeLayout>
 
 </RelativeLayout>
