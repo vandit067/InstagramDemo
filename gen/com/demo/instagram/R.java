@@ -46,22 +46,22 @@ public final class R {
         public static final int instagram=0x7f020000;
     }
     public static final class id {
-        public static final int activity_full_image_img_view=0x7f040003;
-        public static final int activity_full_image_rel_top=0x7f040001;
-        public static final int activity_full_image_txt_title=0x7f040002;
-        public static final int activity_tag_images_gridview=0x7f040008;
-        public static final int activity_tag_images_rel_top=0x7f040005;
-        public static final int activity_tag_images_txt_disconnect=0x7f040007;
-        public static final int activity_tag_images_txt_title=0x7f040006;
-        public static final int btnConnect=0x7f040004;
+        public static final int activity_display_fullimage_img_view=0x7f040003;
+        public static final int activity_display_fullimage_rel_top=0x7f040001;
+        public static final int activity_display_fullimage_txt_title=0x7f040002;
+        public static final int activity_instagram_login_btn_connect=0x7f040004;
+        public static final int activity_tag_images_list_gridview=0x7f040008;
+        public static final int activity_tag_images_list_rel_top=0x7f040005;
+        public static final int activity_tag_images_list_txt_disconnect=0x7f040007;
+        public static final int activity_tag_images_list_txt_title=0x7f040006;
         public static final int dynamic_grid_wobble_tag=0x7f040000;
         public static final int row_image_rel_main=0x7f040009;
         public static final int row_img_image=0x7f04000a;
     }
     public static final class layout {
-        public static final int activity_full_image=0x7f030000;
+        public static final int activity_display_fullimage=0x7f030000;
         public static final int activity_instagram_login=0x7f030001;
-        public static final int activity_tag_images=0x7f030002;
+        public static final int activity_tag_images_list=0x7f030002;
         public static final int row_image=0x7f030003;
     }
     public static final class string {
