@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.demo.instagram.common.Util;
 import com.demo.instagram.common.ZoomableImageView;
+import com.demo.instagram.webservice.WebService;
 
 /**
  * Purpose:This class is use for display larger image in view and also handle
@@ -45,15 +47,18 @@ public class DisplayFullImageActivity extends Activity {
 			url = getIntent().getStringExtra(
 					getString(R.string.key_intent_highresurl));
 		}
+		imageView = (ZoomableImageView) findViewById(R.id.activity_display_fullimage_img_view);
 
-		if (url.length() > 0) {
-
-			imageView = (ZoomableImageView) findViewById(R.id.activity_display_fullimage_img_view);
+		if (url.length() > 0 && WebService.isNetworkAvailable(this)) {
+			new LoadImageTask().execute();
+		} else {
+			Util.displayDialog(this, getString(R.string.common_internet), true);
 		}
 	}
 
 	public class LoadImageTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog progressDialog;
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -72,7 +77,7 @@ public class DisplayFullImageActivity extends Activity {
 		 */
 		@Override
 		protected void onCancelled() {
-			if(isCancelled() && progressDialog != null){
+			if (isCancelled() && progressDialog != null) {
 				progressDialog.dismiss();
 			}
 			super.onCancelled();
@@ -95,12 +100,12 @@ public class DisplayFullImageActivity extends Activity {
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
-			if(isCancelled()){
+			if (isCancelled()) {
 				return;
 			}
 			instagramApp.imageLoader.displayImage(url, imageView,
 					instagramApp.getImageOptions());
-			if(progressDialog != null && progressDialog.isShowing()){
+			if (progressDialog != null && progressDialog.isShowing()) {
 				progressDialog.dismiss();
 			}
 			super.onPostExecute(result);
